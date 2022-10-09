@@ -1,0 +1,14 @@
+{
+  "phone_number_id": "108253523094",
+  "auth_token": "LSAJLDSJAFLDSJF",
+  "test_send_template_message_w_url_button": {
+    "template_name": "phone_test_6",
+    "to_phone_number": "525871363523",
+    "lang_code": "en"
+  },
+  "test_send_otp_message": {
+    "template_name": "verification_test_1",
+    "to_phone_number": "525871363523",
+    "lang_code": "en"
+  }
+}
