@@ -1,21 +1,20 @@
 package templatemessage
 
+import (
+	"github.com/digitalhurricane-io/go-whatsapp-wrapper/base"
+	"github.com/digitalhurricane-io/go-whatsapp-wrapper/base/basemessagetype"
+)
+
 // TemplateParams used when sending a template message
 type TemplateParams struct {
-	MessagingProduct string   `json:"messaging_product"`
-	RecipientType    string   `json:"recipient_type"`
-	To               string   `json:"to"`
-	Type     string   `json:"type"`
+	base.BaseMessageParams
 	Template Template `json:"template"`
 }
 
 // NewTemplateParams paramText strings are what fills in the placeholders in the whatsapp template {{1}}
 func NewTemplateParams(templateName, toPhoneNumber, langCode string) TemplateParams {
 	return TemplateParams{
-		MessagingProduct: "whatsapp",
-		RecipientType:    "individual",
-		To:               toPhoneNumber,
-		Type:             "template",
+		BaseMessageParams: base.NewBaseMessageParams(basemessagetype.Template, toPhoneNumber),
 		Template: Template{
 			Name: templateName,
 			Language: Language{

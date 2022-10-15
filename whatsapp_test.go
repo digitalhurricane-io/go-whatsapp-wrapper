@@ -53,8 +53,9 @@ func TestSendTemplateMessageWUrlButton(t *testing.T) {
 
 	msg.Buttons().AddUrlButton(0, "myurlsuffix")
 
-	_, err := msg.Send()
+	reqJson, err := msg.Send()
 	if err != nil {
+		log.Println(reqJson)
 		t.Fatal(err)
 	}
 }
@@ -71,8 +72,9 @@ func TestSendOTPMessage(t *testing.T) {
 	msg.Header().AddText("Bobs Burgers")
 	msg.Body().AddText("111-111")
 
-	_, err := msg.Send()
+	reqJson, err := msg.Send()
 	if err != nil {
+		log.Println(reqJson)
 		t.Fatal(err)
 	}
 
