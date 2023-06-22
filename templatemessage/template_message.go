@@ -110,13 +110,30 @@ func (tm *TemplateMessage) Send(client ...*http.Client) (reqPrettyJson string, e
 		respBodyJsonText = string(respData)
 	}
 
-	// todo: if phone number we tried to send to is not valid, return an error that tells us that
-	// so that we can tell the user. I can't see what the error code for that is yet because
-	// I haven't setup a production phone number yet.
+	var errRespData errResponseJson
+	err = json.Unmarshal(respData, &errRespData)
+	if err != nil {
+		return reqPrettyJson, err
+	}
+
 	// List of codes: https://developers.facebook.com/docs/whatsapp/cloud-api/support/error-codes
+	if errRespData.Error.Code == 100 { // code 100 actually means invalid parameter but we're going to take it to always mean invalid phone number
+		return reqPrettyJson, ErrInvalidPhoneNumber
+	} else if errRespData.Error.Code == 131026 {
+		return reqPrettyJson, ErrNoWhatsappAccount
+	}
 
 	err = errors.Errorf("got status code %d when sending whatsapp "+
 		"template message. resp body: %s", resp.StatusCode, respBodyJsonText)
 
 	return reqPrettyJson, err
+}
+
+var ErrInvalidPhoneNumber = errors.New("Invalid phone number")
+var ErrNoWhatsappAccount = errors.New("Phone number is not associated with a whatsapp account")
+
+type errResponseJson struct {
+	Error struct {
+		Code int `json:"code"`
+	} `json:"error"`
 }
